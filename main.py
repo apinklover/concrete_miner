@@ -3,8 +3,11 @@ import keyboard
 import time as t
 
 mouse = Controller()
-halt_key = "ctrl"
+halt_key = "ctrl"          # look up python keyboard library documentation for key names
 num_items_per_hotbar = 64
+lag_compensation = 3
+filled_hotbar_slots = 8    # enter how many hotbar slots are taken up (max 8). items on hotbar must be left-aligned.
+
 
 def click(button, for_how_long):
     mouse.press(button)
@@ -21,17 +24,9 @@ def mine():
     click(B.left, 0.75)
 
 
-def move_down_hotbar(num):
-    mouse.scroll(0, num)
-
-
-def move_up_hotbar(num):
-    mouse.scroll(0, -num)
-
-
 def mine_concrete():
-    for hotbar in range(2, 11):
-        for i in range(num_items_per_hotbar + 3):      # mines a bit more to account for missed blocks due to lag
+    for hotbar in range(2, filled_hotbar_slots + 3):
+        for i in range(num_items_per_hotbar + lag_compensation):
             if keyboard.is_pressed(halt_key):
                 exit(0)
             place()
